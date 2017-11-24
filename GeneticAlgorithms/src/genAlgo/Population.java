@@ -33,7 +33,7 @@ public class Population{
 		perfectScore = 1;
 	}
 	
-	private void calculateFitness(){
+	public void calculateFitness(){
 		for (int i = 0; i<population.length; i++){
 			population[i].eveulateDNAFitness(targetPhrase);
 		}
@@ -42,7 +42,7 @@ public class Population{
 	public void selection(){
 		matingPool.clear();
 		switch (mySelection){
-		case "FA": 
+		case "fp": 
 			fitnessProp(population);
 			break;
 		case "sto":
@@ -55,7 +55,7 @@ public class Population{
 			truncation(population);
 			break;
 		default:
-			System.out.println("Incorrect selection parameter. Try FA, sto, tour, or trun.");
+			System.out.println("Incorrect selection parameter. Try fp, sto, tour, or trun.");
 			System.exit(1);
 			break;
 		}
@@ -130,6 +130,7 @@ public class Population{
 			int addToPool = (int) (uniformDistrbVal *100);
 			for (int j = 0; j< addToPool; j++){
 				matingPool.add(population[i]);
+				//System.out.println("im here!");
 			}
 		}
 	}
