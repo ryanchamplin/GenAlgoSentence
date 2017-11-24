@@ -1,9 +1,10 @@
 package genAlgo;
 
+import java.util.Comparator;
 import java.util.Random;
 
 
-public class DNA {
+public class DNA{ // may need impliment Comparable<DNA>
 	
 	Random rand = new Random();
 	final String ALPHABET = "1234567890-=!@#$%^&*()_+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]{};':\"\\,./<>?";
@@ -60,4 +61,29 @@ public class DNA {
 	public double getFitness(){
 		return fitness;
 	}
+	
+/*	public static Comparator<DNA> DNAComparaator = new Comparator<DNA>(){
+		public int compare(DNA dna1, DNA dna2){
+			double fitness1 = dna1.getFitness();
+			double fitness2 = dna2.getFitness();
+			
+			return fitness2.compareTo(fitness1);
+		}
+	};*/
+
+/*	@Override
+	public int compareTo(DNA other) {
+		if (this.getFitness() == other.getFitness() ){
+			return 0;
+		}
+		if (this.getFitness() < other.getFitness()){
+			return -1;
+		}
+		else{
+			return 1;
+		}	
+	}
+	*/
+	
+
 }

@@ -1,5 +1,7 @@
 package genAlgo;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 
@@ -60,28 +62,57 @@ public class Population{
 	}
 	
 	private void truncation(DNA[] population) {
-		// TODO Auto-generated method stub
+		DNA[] populationWorkSpace = new DNA[population.length];
+		int midPoint =(int) population.length / 2;
+		double[] fitnessArray = new double[population.length];
 		
-	}
+		for(int i = 0; i<population.length; i++){
+			populationWorkSpace[i] = population[i];
+			fitnessArray[i] = population[i].getFitness();
+		}
+		
+		// TODO need to sort the workspace array by fitness
+		//Arrays.sort(populationWorkSpace, getFitness());
 
-	private void tournament(DNA[] population) {
-		// T
-		
-		DNA best = null;
-		DNA current = population[rand.nextInt(population.length)];
-		
-		for (int i = 0; i<1; i++){
-			if (best == null || current.getFitness() > best.getFitness()){
-				best = current;
+		for(int i = 0; i<1; i++) {
+			for(int j = 0; j<midPoint; j++){
+				matingPool.add(population[i]);
 			}
 		}
-		matingPool.add(current);
+
+	}
+	
+
+	/* tournament logic
+	 * pick 2. 
+	 * the better of the 2 get put into the mating pool.
+	 * repeat until the mating pool is the size of the population.
+	 */
+	private void tournament(DNA[] population) {
+		for (int i = 0; i<population.length; i++){
+			DNA best = null;
+			DNA current;
+			
+			for (int j = 0; j<1; j++){
+				current = population[rand.nextInt(population.length)];
+				if (best == null || current.getFitness() > best.getFitness()){
+					best = current;
+				}
+			}
+			matingPool.add(best);
+		}
 	}
 
 	private void stochastic(DNA[] population) {
 		// TODO Auto-generated method stub
 	}
 
+	/* logic behind Fitness Porportinate.
+	 * 1. normalize your fitnesses between 0 and 1 in order to scale them.
+	 * 2. find the number of times that you will add a DNA to the mating pool
+	 * 	  The better the fitness the higher number of times it will get added into the pool
+	 * 3. add the DNA to the mating pool x number of times.
+	 */
 	private void fitnessProp(DNA[] population) {
 		// Define variables.
 		double uniformDistrbVal = 0; // Will use this to normalize data
@@ -94,12 +125,6 @@ public class Population{
 			}
 		}
 		
-		/* logic behind Fitness Porportinate.
-		 * 1. normalize your fitnesses between 0 and 1 in order to scale them.
-		 * 2. find the number of times that you will add a DNA to the mating pool
-		 * 	  The better the fitness the higher number of times it will get added into the pool
-		 * 3. add the DNA to the mating pool x number of times.
-		 */
 		for (int i = 0; i<population.length; i++){
 			uniformDistrbVal = map(population[i].getFitness(), 0, maxFitness, 0 ,1);
 			int addToPool = (int) (uniformDistrbVal *100);
