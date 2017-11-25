@@ -1,6 +1,6 @@
 package genAlgo;
 
-import java.util.Comparator;
+//import java.util.Comparator;
 import java.util.Random;
 
 

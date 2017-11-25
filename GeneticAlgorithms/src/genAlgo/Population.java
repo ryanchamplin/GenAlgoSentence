@@ -1,7 +1,7 @@
 package genAlgo;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+//import java.util.Arrays;
+//import java.util.Collections;
 import java.util.Random;
 
 
@@ -130,7 +130,6 @@ public class Population{
 			int addToPool = (int) (uniformDistrbVal *100);
 			for (int j = 0; j< addToPool; j++){
 				matingPool.add(population[i]);
-				//System.out.println("im here!");
 			}
 		}
 	}
@@ -189,5 +188,15 @@ public class Population{
 		}
 		
 		return totalFit/ population.length;
+	}
+	
+	public String printSentences(){
+		String everything = "";
+		
+		for (int i = 0; i < population.length; i++){
+			everything += population[i].returnSentence() + "\n";
+		}
+		
+		return everything;
 	}
 }

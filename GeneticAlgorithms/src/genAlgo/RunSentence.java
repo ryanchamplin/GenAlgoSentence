@@ -23,6 +23,13 @@ public class RunSentence {
 		population.selection();
 		population.generateGeneration();
 		population.calculateFitness();
+		
+		String answer = population.getBest();
+		
+		System.out.println(population.printSentences());
+		System.out.println("I think the best answer is " + answer);
+		System.out.println("We found this in " + population.getGenerationNumber() + " generations.");
+		
 
 	}
 
