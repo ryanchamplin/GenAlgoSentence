@@ -7,7 +7,8 @@ import java.util.Random;
 public class DNA{ // may need impliment Comparable<DNA>
 	
 	Random rand = new Random();
-	final String ALPHABET = "1234567890-=!@#$%^&*()_+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]{};':\"\\,./<>?";
+	final String ALPHABET = " 1234567890-=!@#$%^&*()_+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]{};':\"\\,./<>?";
+	//final String ALPHABET = " abcdefghijklmnopqrstuvwxyz";
 	private double fitness;
 	
 	char[] population;
@@ -52,7 +53,7 @@ public class DNA{ // may need impliment Comparable<DNA>
 	
 	public void mutate(double mutationRate){
 		for (int i = 0; i<population.length; i++){
-			if(rand.nextInt(1) < mutationRate){
+			if(rand.nextDouble() < mutationRate){
 				population[i] = (char) ALPHABET.charAt(rand.nextInt(ALPHABET.length()));
 			}
 		}

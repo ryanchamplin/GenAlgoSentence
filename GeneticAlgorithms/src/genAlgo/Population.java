@@ -97,7 +97,7 @@ public class Population{
 			DNA best = null;
 			DNA current;
 			
-			for (int j = 0; j<1; j++){
+			for (int j = 0; j<2; j++){
 				current = population[rand.nextInt(population.length)];
 				if (best == null || current.getFitness() > best.getFitness()){
 					best = current;
@@ -135,7 +135,6 @@ public class Population{
 			int addToPool = (int) (uniformDistrbVal *100);
 			for (int j = 0; j< addToPool; j++){
 				matingPool.add(population[i]);
-				System.out.println("I should be adding " + population[i].returnSentence() + " to the mating pool");
 			}
 		}
 	}
@@ -143,49 +142,39 @@ public class Population{
 	// maps a number from one range to another. doesn't check for div by 0 cause I'm lazy and won't need to.
 	private double map(double value, double low1, double high1, double low2, double high2){
 		double myDouble = 0;
-		myDouble = low2 + (value - low1) * (high2 - low2) / (high1 - low1);
+		myDouble = ((value-low1)/(high1-low1) *(high2 - low2) + low2);
 		return myDouble;
 	}
 	
 	public void generateGeneration(){
 		for (int i = 0; i<population.length; i++){
-			if(matingPool.size() == 0){
-				System.out.println("The mating pool is zero.");
-				System.exit(1);
-			} else {
-				int a = rand.nextInt(matingPool.size());
-				int b = rand.nextInt(matingPool.size());
-				DNA partnerA = matingPool.get(a);
-				DNA partnerB = matingPool.get(b);
-				// this looks wrong
-				DNA child = partnerA.crossover(partnerB);
-				child.mutate(muatationRate);
-				population[i] = child;
-			}
+			int a = rand.nextInt(matingPool.size());
+			int b = rand.nextInt(matingPool.size());
+			DNA partnerA = matingPool.get(a);
+			DNA partnerB = matingPool.get(b);
+
+			DNA child = partnerA.crossover(partnerB);
+			child.mutate(muatationRate);
+			population[i] = child;
 		}
 		generations++;
 	}
 	
 	public String getBest(){
 		double currentBest = 0.0;
-		int popIndex = 0;
+		int bestPopIndex = 0;
 		
 		for (int i = 0; i< population.length; i++){
-			if(population[i].getFitness() < PERFECTSCORE){
-				if(population[i].getFitness()>currentBest){
-					//popIndex = i;
+			if(population[i].getFitness() > currentBest){
 					currentBest = population[i].getFitness();
-					System.out.println(currentBest);
-				}else{
-					popIndex = i;
-				}
-			}
-			
-			if(currentBest == PERFECTSCORE){
-				isDone = true;
+					//System.out.println(currentBest);
+					bestPopIndex = i;				
 			}
 		}
-		return population[popIndex].returnSentence();
+		if(currentBest == PERFECTSCORE){
+			isDone = true;
+		}
+		return population[bestPopIndex].returnSentence();
 	}
 	
 	
@@ -211,8 +200,7 @@ public class Population{
 		
 		for (int i = 0; i < population.length; i++){
 			everything += population[i].returnSentence() + "\n";
-		}
-		
+		}	
 		return everything;
 	}
 }
