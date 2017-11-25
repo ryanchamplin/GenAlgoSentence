@@ -20,15 +20,21 @@ public class RunSentence {
 		Population population = new Population(target, mutationRate, maxPopulation, paramater);
 		scanner.close();
 		
-		population.selection();
-		population.generateGeneration();
-		population.calculateFitness();
-		
-		String answer = population.getBest();
+		while(population.isDone != true){
+			population.selection();
+			population.generateGeneration();
+			population.calculateFitness();
+		}
+
+		population.printMatingPool();
+	/*	String answer = population.getBest();
 		
 		System.out.println(population.printSentences());
 		System.out.println("I think the best answer is " + answer);
 		System.out.println("We found this in " + population.getGenerationNumber() + " generations.");
+		System.out.println("the target I wanted was " + target);
+		System.out.println("the population is finished " + population.isDone);
+		System.out.println("The average fitness is " + population.getAvgFitness() + "\n");*/
 		
 
 	}

@@ -13,7 +13,7 @@ public class Population{
 	String targetPhrase;
 	int generations;
 	boolean isDone;
-	int perfectScore;
+	final int PERFECTSCORE = 1;
 	Random rand = new Random();
 	String mySelection = "";
 	
@@ -30,9 +30,13 @@ public class Population{
 		isDone = false;
 		generations = 0;
 		this.mySelection = selectionType;
-		perfectScore = 1;
+		//perfectScore = 1;
 	}
-	
+	public void printMatingPool(){
+		for(int i = 0; i<matingPool.size(); i++){
+			System.out.println(matingPool.get(i).returnSentence());
+		}
+	}
 	public void calculateFitness(){
 		for (int i = 0; i<population.length; i++){
 			population[i].eveulateDNAFitness(targetPhrase);
@@ -114,6 +118,7 @@ public class Population{
 	 * 3. add the DNA to the mating pool x number of times.
 	 */
 	private void fitnessProp(DNA[] population) {
+		
 		// Define variables.
 		double uniformDistrbVal = 0; // Will use this to normalize data
 		double maxFitness = 0; // holds the highest fitness for the map function.
@@ -130,11 +135,12 @@ public class Population{
 			int addToPool = (int) (uniformDistrbVal *100);
 			for (int j = 0; j< addToPool; j++){
 				matingPool.add(population[i]);
+				System.out.println("I should be adding " + population[i].returnSentence() + " to the mating pool");
 			}
 		}
 	}
 
-	// maps a number from one range to another. doesn't check for 0 cause I'm lazy and won't need to.
+	// maps a number from one range to another. doesn't check for div by 0 cause I'm lazy and won't need to.
 	private double map(double value, double low1, double high1, double low2, double high2){
 		double myDouble = 0;
 		myDouble = low2 + (value - low1) * (high2 - low2) / (high1 - low1);
@@ -143,14 +149,19 @@ public class Population{
 	
 	public void generateGeneration(){
 		for (int i = 0; i<population.length; i++){
-			int a = rand.nextInt(matingPool.size());
-			int b = rand.nextInt(matingPool.size());
-			DNA partnerA = matingPool.get(a);
-			DNA partnerB = matingPool.get(b);
-			
-			DNA child = partnerA.crossover(partnerB);
-			child.mutate(muatationRate);
-			population[i] = child;
+			if(matingPool.size() == 0){
+				System.out.println("The mating pool is zero.");
+				System.exit(1);
+			} else {
+				int a = rand.nextInt(matingPool.size());
+				int b = rand.nextInt(matingPool.size());
+				DNA partnerA = matingPool.get(a);
+				DNA partnerB = matingPool.get(b);
+				// this looks wrong
+				DNA child = partnerA.crossover(partnerB);
+				child.mutate(muatationRate);
+				population[i] = child;
+			}
 		}
 		generations++;
 	}
@@ -160,12 +171,17 @@ public class Population{
 		int popIndex = 0;
 		
 		for (int i = 0; i< population.length; i++){
-			if(population[i].getFitness() > perfectScore){
-				popIndex = i;
-				currentBest = population[i].getFitness();
+			if(population[i].getFitness() < PERFECTSCORE){
+				if(population[i].getFitness()>currentBest){
+					//popIndex = i;
+					currentBest = population[i].getFitness();
+					System.out.println(currentBest);
+				}else{
+					popIndex = i;
+				}
 			}
 			
-			if(currentBest == perfectScore){
+			if(currentBest == PERFECTSCORE){
 				isDone = true;
 			}
 		}
