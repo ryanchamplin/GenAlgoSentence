@@ -65,14 +65,14 @@ public class Population{
 		}
 	}
 	
-	private void truncation(DNA[] population) {
-		DNA[] populationWorkSpace = new DNA[population.length];
-		int midPoint =(int) population.length / 2;
-		double[] fitnessArray = new double[population.length];
+	private void truncation(DNA[] inPopulation) {
+		DNA[] populationWorkSpace = new DNA[inPopulation.length];
+		int midPoint =(int) inPopulation.length / 2;
+		double[] fitnessArray = new double[inPopulation.length];
 		
-		for(int i = 0; i<population.length; i++){
-			populationWorkSpace[i] = population[i];
-			fitnessArray[i] = population[i].getFitness();
+		for(int i = 0; i<inPopulation.length; i++){
+			populationWorkSpace[i] = inPopulation[i];
+			fitnessArray[i] = inPopulation[i].getFitness();
 		}
 		
 		// TODO need to sort the workspace array by fitness
@@ -80,7 +80,7 @@ public class Population{
 
 		for(int i = 0; i<1; i++) {
 			for(int j = 0; j<midPoint; j++){
-				matingPool.add(population[i]);
+				matingPool.add(inPopulation[i]);
 			}
 		}
 
@@ -92,13 +92,13 @@ public class Population{
 	 * the better of the 2 get put into the mating pool.
 	 * repeat until the mating pool is the size of the population.
 	 */
-	private void tournament(DNA[] population) {
-		for (int i = 0; i<population.length; i++){
+	private void tournament(DNA[] inPopulation) {
+		for (int i = 0; i<inPopulation.length; i++){
 			DNA best = null;
 			DNA current;
 			
 			for (int j = 0; j<2; j++){
-				current = population[rand.nextInt(population.length)];
+				current = inPopulation[rand.nextInt(inPopulation.length)];
 				if (best == null || current.getFitness() > best.getFitness()){
 					best = current;
 				}
@@ -107,8 +107,18 @@ public class Population{
 		}
 	}
 
-	private void stochastic(DNA[] population) {
+	private void stochastic(DNA[] inPopulation) {
 		// TODO Auto-generated method stub
+		int distance = (int) (0.1 * inPopulation.length);
+		//for(int i = 0; i<inPopulation.length; i++){
+			int pointer = (int) rand.nextInt(distance);
+			
+			while(pointer < inPopulation.length){
+				matingPool.add(inPopulation[pointer]);
+				pointer += distance;
+			//}
+		}
+
 	}
 
 	/* logic behind Fitness Porportinate.
@@ -117,24 +127,24 @@ public class Population{
 	 * 	  The better the fitness the higher number of times it will get added into the pool
 	 * 3. add the DNA to the mating pool x number of times.
 	 */
-	private void fitnessProp(DNA[] population) {
+	private void fitnessProp(DNA[] inPopulation) {
 		
 		// Define variables.
 		double uniformDistrbVal = 0; // Will use this to normalize data
 		double maxFitness = 0; // holds the highest fitness for the map function.
 		
 		// finds largest fitness, this is used to normalize the data with my map function.
-		for (int i =0; i<population.length; i++){			
-			if(population[i].getFitness() > maxFitness){
-				maxFitness = population[i].getFitness();
+		for (int i =0; i<inPopulation.length; i++){			
+			if(inPopulation[i].getFitness() > maxFitness){
+				maxFitness = inPopulation[i].getFitness();
 			}
 		}
 		
-		for (int i = 0; i<population.length; i++){
-			uniformDistrbVal = map(population[i].getFitness(), 0, maxFitness, 0 ,1);
+		for (int i = 0; i<inPopulation.length; i++){
+			uniformDistrbVal = map(inPopulation[i].getFitness(), 0, maxFitness, 0 ,1);
 			int addToPool = (int) (uniformDistrbVal *100);
 			for (int j = 0; j< addToPool; j++){
-				matingPool.add(population[i]);
+				matingPool.add(inPopulation[i]);
 			}
 		}
 	}
@@ -144,6 +154,14 @@ public class Population{
 		double myDouble = 0;
 		myDouble = ((value-low1)/(high1-low1) *(high2 - low2) + low2);
 		return myDouble;
+	}
+	
+	private double findMaxFitness(DNA[] inPopulation){
+		double totalFitness = 0;
+		for (int i =0; i<inPopulation.length; i++){			
+			totalFitness += inPopulation[i].getFitness();
+		}
+		return totalFitness;
 	}
 	
 	public void generateGeneration(){
