@@ -115,27 +115,30 @@ public class Population{
 	 */
 	private void stochastic(DNA[] inPopulation) {
 		// TODO Auto-generated method stub
-		// I need to again sort by fitness of the population. 
-		// So I really need to figure out the best way to sort an object by its property.
+		double maxFit = findMaxFitness(inPopulation);
+		int numToKeep = (int) (inPopulation.length *.1);
+		double distance = (maxFit / numToKeep);
+		double startingPlace = 0 + (distance - 0) * rand.nextDouble();
+		double[] pointers = new double[numToKeep];
 		
-		Arrays.sort(inPopulation);
-		List <DNA> test = Arrays.asList(inPopulation);
-		Collections.reverse(test);
-		DNA[] reversed = test.toArray(inPopulation);
+		for(int i = 0; i < numToKeep; i++){
+			pointers[i] = startingPlace + (i*distance);
+		}
 		
-		int distance = (int) (0.1 * inPopulation.length);
-		int pointer = (int) rand.nextInt(distance);	
-		
-		double max = findMaxFitness(inPopulation);
-		while(pointer < inPopulation.length){
-			//if(inPopulation[pointer].getFitness() > .1 * max){
-				for(int i = 0; i<10; i++){
-					matingPool.add(inPopulation[pointer]);				
+		for(double point : pointers){
+			int counter = 0;
+			double fitnessSum = 0;
+			for(int i = 0; i < pointers.length; i++){
+				fitnessSum += population[counter].getFitness();
+				if(fitnessSum < point){
+					counter++;
+				}else{
+					matingPool.add(inPopulation[counter]);
 				}
-			//}
-			pointer += distance;	
+			}
 		}
 	}
+	
 
 	/* logic behind Fitness Porportinate.
 	 * 1. normalize your fitnesses between 0 and 1 in order to scale them.
@@ -226,6 +229,14 @@ public class Population{
 		}
 		
 		return totalFit/ population.length;
+	}
+	
+	private double getTotalFitness(){
+		double totalFit = 0;
+		for (int i = 0; i<population.length; i++){
+			totalFit += population[i].getFitness();
+		}
+		return totalFit;
 	}
 	
 	public String printSentences(){
