@@ -1,7 +1,9 @@
 package genAlgo;
 import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 
@@ -64,7 +66,10 @@ public class Population{
 			break;
 		}
 	}
-	
+	/* Truncation logic.
+	 * Sort the DNA array by average fitness. 
+	 * Drop the worst 50%, and only breed with the top 50%.
+	 */
 	private void truncation(DNA[] inPopulation) {
 		DNA[] populationWorkSpace = new DNA[inPopulation.length];
 		int midPoint =(int) inPopulation.length / 2;
@@ -75,15 +80,12 @@ public class Population{
 			fitnessArray[i] = inPopulation[i].getFitness();
 		}
 		
-		// TODO need to sort the workspace array by fitness
-		//Arrays.sort(populationWorkSpace, getFitness());
-
-		for(int i = 0; i<1; i++) {
-			for(int j = 0; j<midPoint; j++){
-				matingPool.add(inPopulation[i]);
+		Arrays.sort(populationWorkSpace);
+		for(int i = 0; i<midPoint; i++){
+			for(int j=0; j<10; j++){
+				matingPool.add(populationWorkSpace[i]);
 			}
 		}
-
 	}
 	
 
@@ -106,19 +108,33 @@ public class Population{
 			matingPool.add(best);
 		}
 	}
-
+	
+	
+	/* stochastic logic
+	 * Instead of a single selection pointer employed in roulette wheel, SUS uses N equally spaced pointers. 
+	 */
 	private void stochastic(DNA[] inPopulation) {
 		// TODO Auto-generated method stub
+		// I need to again sort by fitness of the population. 
+		// So I really need to figure out the best way to sort an object by its property.
+		
+		Arrays.sort(inPopulation);
+		List <DNA> test = Arrays.asList(inPopulation);
+		Collections.reverse(test);
+		DNA[] reversed = test.toArray(inPopulation);
+		
 		int distance = (int) (0.1 * inPopulation.length);
-		//for(int i = 0; i<inPopulation.length; i++){
-			int pointer = (int) rand.nextInt(distance);
-			
-			while(pointer < inPopulation.length){
-				matingPool.add(inPopulation[pointer]);
-				pointer += distance;
+		int pointer = (int) rand.nextInt(distance);	
+		
+		double max = findMaxFitness(inPopulation);
+		while(pointer < inPopulation.length){
+			//if(inPopulation[pointer].getFitness() > .1 * max){
+				for(int i = 0; i<10; i++){
+					matingPool.add(inPopulation[pointer]);				
+				}
 			//}
+			pointer += distance;	
 		}
-
 	}
 
 	/* logic behind Fitness Porportinate.
@@ -185,7 +201,6 @@ public class Population{
 		for (int i = 0; i< population.length; i++){
 			if(population[i].getFitness() > currentBest){
 					currentBest = population[i].getFitness();
-					//System.out.println(currentBest);
 					bestPopIndex = i;				
 			}
 		}

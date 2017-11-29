@@ -4,11 +4,10 @@ package genAlgo;
 import java.util.Random;
 
 
-public class DNA{ // may need impliment Comparable<DNA>
+public class DNA implements Comparable<DNA> { // may need impliment Comparable<DNA>
 	
 	Random rand = new Random();
 	final String ALPHABET = " 1234567890-=!@#$%^&*()_+ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[]{};':\"\\,./<>?";
-	//final String ALPHABET = " abcdefghijklmnopqrstuvwxyz";
 	private double fitness;
 	
 	char[] population;
@@ -63,28 +62,18 @@ public class DNA{ // may need impliment Comparable<DNA>
 		return fitness;
 	}
 	
-/*	public static Comparator<DNA> DNAComparaator = new Comparator<DNA>(){
-		public int compare(DNA dna1, DNA dna2){
-			double fitness1 = dna1.getFitness();
-			double fitness2 = dna2.getFitness();
-			
-			return fitness2.compareTo(fitness1);
-		}
-	};*/
 
-/*	@Override
+	@Override
 	public int compareTo(DNA other) {
-		if (this.getFitness() == other.getFitness() ){
+		if(this.getFitness() == other.getFitness()){
 			return 0;
 		}
-		if (this.getFitness() < other.getFitness()){
+		if(this.getFitness() > other.getFitness()){
 			return -1;
 		}
-		else{
-			return 1;
-		}	
+		return 1;
 	}
-	*/
+	
 	
 
 }
