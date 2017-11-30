@@ -28,18 +28,10 @@ public class RunSentence {
 			System.out.println("I currently think the best answer is " + answer);
 			System.out.println("avgFit = " + population.getAvgFitness());
 		}
-
-		//population.printMatingPool();
-		
-		
-		//System.out.println(population.printSentences());
 		
 		System.out.println("We found this in " + population.getGenerationNumber() + " generations.");
 		System.out.println("the target I wanted was " + target);
-		System.out.println("the population is finished " + population.isDone);
 		System.out.println("The average fitness is " + population.getAvgFitness() + "\n");
-		
-
 	}
 
 }

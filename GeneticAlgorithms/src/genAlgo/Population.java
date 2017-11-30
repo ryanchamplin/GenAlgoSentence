@@ -1,9 +1,6 @@
 package genAlgo;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
 
 
@@ -201,8 +198,8 @@ public class Population{
 		
 		for (int i = 0; i< population.length; i++){
 			if(population[i].getFitness() > currentBest){
-					currentBest = population[i].getFitness();
-					bestPopIndex = i;				
+				currentBest = population[i].getFitness();
+				bestPopIndex = i;				
 			}
 		}
 		if(currentBest == PERFECTSCORE){
