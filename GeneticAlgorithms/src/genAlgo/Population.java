@@ -116,7 +116,7 @@ public class Population{
 	private void stochastic(DNA[] inPopulation) {
 		// TODO Auto-generated method stub
 		double maxFit = findMaxFitness(inPopulation);
-		int numToKeep = (int) (inPopulation.length *.1);
+		int numToKeep = (int) (inPopulation.length *.2);
 		double distance = (maxFit / numToKeep);
 		double startingPlace = 0 + (distance - 0) * rand.nextDouble();
 		double[] pointers = new double[numToKeep];
@@ -128,14 +128,12 @@ public class Population{
 		for(double point : pointers){
 			int counter = 0;
 			double fitnessSum = 0;
-			for(int i = 0; i < pointers.length; i++){
+			fitnessSum += population[counter].getFitness();
+			while(fitnessSum < point){
+				counter++;
 				fitnessSum += population[counter].getFitness();
-				if(fitnessSum < point){
-					counter++;
-				}else{
-					matingPool.add(inPopulation[counter]);
-				}
 			}
+			matingPool.add(inPopulation[counter]);
 		}
 	}
 	
